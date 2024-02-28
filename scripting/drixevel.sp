@@ -3,8 +3,9 @@
 
 #include <sourcemod>
 
-#undef REQUIRE_PLUGIN
+#undef REQUIRE_EXTENSIONS
 #include <tf2_stocks>
+#define REQUIRE_EXTENSIONS
 
 EngineVersion g_Engine;
 int g_WaterLevel;
@@ -15,7 +16,7 @@ public Plugin myinfo = {
 	name = "[ANY] Drixevel Helper Plugin",
 	author = "Drixevel",
 	description = "A personal plugin for yours truely which helps with server development, maintenance and also includes some fun stuff.",
-	version = "1.0.1",
+	version = "1.0.2",
 	url = "https://drixevel.dev/"
 };
 
